@@ -1,0 +1,47 @@
+---
+- name: Resize partition
+  become: true
+  command: resize2fs /dev/sda1
+
+# Upgrade all yum packages 
+# (uncomment for testing - immensely speeds up the running of this playbook on a virgin vm)
+- name: "Ensure all installed YUM Packages are up-to-date."
+  yum: name=* state=latest
+  become: true
+
+# Copy Bashrc
+- name: "Ensure root user has a copy of the .bashrc."
+  become: true
+  copy:
+    src: "./.bashrc"
+    dest: /root/
+    owner: root
+    group: root
+- name: "Ensure vagrant user has a copy of the .bashrc."
+  become: true
+  copy:
+    src: "./.bashrc"
+    dest: /home/vagrant/
+    owner: vagrant
+    group: vagrant
+
+# Copy Editrc (for MySQL prompt)
+- name: "Ensure root user has a copy of the .editrc."
+  become: true
+  copy:
+    src: "./.editrc"
+    dest: /root/
+    owner: root
+    group: root
+- name: "Ensure vagrant user has a copy of the .editrc."
+  become: true
+  copy:
+    src: "./.editrc"
+    dest: /home/vagrant/
+    owner: vagrant
+    group: vagrant
+
+# Install HTop
+- name: "Ensure HTop is installed"
+  become: true
+  yum: name=htop state=present

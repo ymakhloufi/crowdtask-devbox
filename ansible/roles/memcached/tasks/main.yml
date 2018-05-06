@@ -1,0 +1,12 @@
+---
+
+# Memcached
+- name: "Ensure Memcached Server is installed."
+  yum: name=memcached state=present
+  become: true
+- name: "Ensure Memcached Server is running."
+  service: name=memcached state=started
+  become: true
+- name: "Ensure Memcached Server  is starting on bootup."
+  service: name=memcached enabled=yes
+  become: true

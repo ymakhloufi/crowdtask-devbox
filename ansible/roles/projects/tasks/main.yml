@@ -1,0 +1,15 @@
+---
+# create databases for API
+- name: "Ensure MySQL DB crowdtask is present."
+  mysql_db:
+    name: crowdtask
+    state: present
+    login_user: root
+    login_password: 
+- name: "Ensure MySQL DB crowdtask_testing is present."
+  mysql_db:
+    name: studi_testing
+    state: present
+    login_user: root
+    login_password: 
+

@@ -1,0 +1,14 @@
+---
+
+- hosts: lampservers
+  roles:
+    - common
+    - phpmyadmin
+    - apache
+    - memcached
+    - mysql
+    - php
+    - git
+    - projects
+  vars:
+    node_version: "v7.10.0"

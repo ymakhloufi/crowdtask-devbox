@@ -1,0 +1,4 @@
+*
+!.gitignore
+!refresh_studi_db.sh
+!authorized_keys

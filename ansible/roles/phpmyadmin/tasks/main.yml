@@ -1,0 +1,43 @@
+---
+
+# PhpMyAdmin
+- name: set phpmyadmin version variable
+  set_fact:
+    pma_version: '4.8.0.1'
+
+- name: "Ensure PhpMyAdmin {{ pma_version }} is downloaded"
+  become: true
+  unarchive:
+    src: https://files.phpmyadmin.net/phpMyAdmin/{{ pma_version }}/phpMyAdmin-{{ pma_version }}-english.zip
+    dest: /home/vagrant
+    creates: /home/vagrant/phpMyAdmin-{{ pma_version }}-english
+    mode: 0755
+    copy: no
+    owner: vagrant
+    group: vagrant
+
+- name: configure phpmyadmin for auto-login
+  copy:
+    src: config.inc.php
+    dest: /home/vagrant/phpMyAdmin-{{ pma_version }}-english/config.inc.php
+    mode: 0644
+    owner: vagrant
+    group: vagrant
+
+- name: "Ensure /var/www exists"
+  become: true
+  file:
+    path: /var/www
+    state: directory
+    mode: 0755
+    owner: vagrant
+    group: vagrant
+
+- name: "Ensure PhpMyAdmin's folder is symlinked in /var/www."
+  become: true
+  file:
+    src: /home/vagrant/phpMyAdmin-{{ pma_version }}-english
+    dest: /var/www/pma
+    owner: vagrant
+    group: vagrant
+    state: link

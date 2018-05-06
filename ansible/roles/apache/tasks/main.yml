@@ -1,0 +1,73 @@
+---
+
+# Apache 2.4 (not 2.2 !!)
+- name: "Ensure Apache is installed."
+  yum: name=httpd24 state=present
+  become: true
+- name: "Ensure Apache is running."
+  service: name=httpd state=started
+  become: true
+- name: "Ensure Apache is starting on bootup."
+  service: name=httpd enabled=yes
+  become: true
+
+
+# Copy VHosts config
+- name: "Ensure Apache sites-available directory exists"
+  file:
+    path: /etc/httpd/sites-available
+    state: directory
+    owner: root
+    group: root
+  become: true
+- name: "Ensure Apache VHosts are copied."
+  become: true
+  copy:
+    src: "{{ item }}"
+    dest: /etc/httpd/sites-available
+    owner: root
+    group: root
+  with_fileglob:
+    - ./vhosts/*
+  notify:
+  - restart httpd
+- name: "Ensure Apache VHosts are enabled."
+  file:
+    src: /etc/httpd/sites-available/{{ item }}
+    dest: /etc/httpd/conf.d/{{ item }}
+    state: link
+  become: true
+  with_items:
+    - crowdtask.conf
+    - pma.conf
+  notify:
+  - restart httpd
+- name: "Ensure Project symlinks exist."
+  become: true
+  file:
+    src: /home/vagrant/code/{{ item }}
+    dest: /var/www/{{ item }}
+    state: link
+    force: yes
+  with_items:
+    - crowdtask
+  notify:
+  - restart httpd
+
+# Make Apache run as User and Group 'vagrant'
+- name: "Ensure Apache is running as user 'vagrant'."
+  become: true
+  replace:
+    dest: /etc/httpd/conf/httpd.conf
+    regexp: '(\s+)User apache(\s+.*)?$'
+    replace: '\1User vagrant\2'
+  notify:
+  - restart httpd
+- name: "Ensure Apache is running as group 'vagrant'."
+  become: true
+  replace:
+    dest: /etc/httpd/conf/httpd.conf
+    regexp: '(\s+)Group apache(\s+.*)?$'
+    replace: '\1Group vagrant\2'
+  notify:
+  - restart httpd

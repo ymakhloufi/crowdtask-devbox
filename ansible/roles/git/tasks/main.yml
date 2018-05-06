@@ -1,0 +1,9 @@
+---
+
+# GIT
+- name: "Ensure GIT is installed."
+  yum: name=git state=present
+  become: true
+- name: "Ensure TIG is installed."
+  yum: name=tig state=present
+  become: true

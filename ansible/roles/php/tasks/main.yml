@@ -1,0 +1,49 @@
+---
+
+# PHP 7.1
+- name: "Ensure PHP 7.1 is installed."
+  yum: name=php71 state=present
+  become: true
+- name: "Ensure all needed PHP modules are installed."
+  yum: pkg={{ item }} state=present
+  become: true
+  with_items:
+    - php71-mbstring
+    - php71-devel
+    - php71-opcache
+    - php71-soap
+    - php71-pdo
+    - php71-mcrypt
+    - php71-xml
+    - php71-mysqlnd
+    - php71-gd
+    - php71-json
+    - php71-memcached
+    - php71-cli
+    - php71-common
+    - php71-curl
+    - php71-readline
+    - php71-redis
+    - php71-gmp
+    - php71-pecl-xdebug
+  notify:
+  - restart httpd
+
+# Install composer
+- name: "Ensure Composer ist installed globally."
+  become: true
+  get_url:
+    url: https://getcomposer.org/composer.phar
+    dest: /usr/local/bin/
+    mode: 0777
+- name: "Ensure composer is symlinked to composer.phar"
+  become: true
+  file:
+    src: /usr/local/bin/composer.phar
+    dest: /usr/local/bin/composer
+    state: link
+- name: "Ensure PHP sessions can be stored properly"
+  become: true
+  file:
+    path: /var/lib/php/7.1/session
+    mode: 0777
