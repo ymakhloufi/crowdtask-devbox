@@ -9,8 +9,8 @@ Required Vagrant plugins:
     vagrant plugin install vagrant-hostmanager
     vagrant plugin install vagrant-disksize
 
-
 In order to bootstrap the whole thing, git-clone crowdtask into the /code/ folder:
+
     cd code
     git clone git@github.com:ymakhloufi/crowdtask-devbox.git
 
