@@ -12,7 +12,7 @@ Required Vagrant plugins:
 In order to bootstrap the whole thing, git-clone crowdtask into the /code/ folder:
 
     cd code
-    git clone git@github.com:ymakhloufi/crowdtask-devbox.git
+    git clone git@github.com:ymakhloufi/crowdtask.git
 
 Then just run ```vagrant up --provision``` while you are in the folder with the cloned dev-box repository.
 
