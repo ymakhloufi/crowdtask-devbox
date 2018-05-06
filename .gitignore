@@ -3,3 +3,4 @@ playbook.retry
 config.local.yml
 .idea
 code/*
+!code/.*
