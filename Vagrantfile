@@ -1,7 +1,3 @@
-# Workaround for old vagrant versions with the wrong base URL
-# https://github.com/hashicorp/vagrant/issues/9442#issuecomment-363080565
-Vagrant::DEFAULT_SERVER_URL.replace('https://vagrantcloud.com')
-
 HOSTS=["pma.crowdtask.local", "www.crowdtask.local", "crowdtask.local", "api.crowdtask.local"]
 
 current_dir       = File.dirname(File.expand_path(__FILE__))
